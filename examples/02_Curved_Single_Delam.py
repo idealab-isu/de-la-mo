@@ -113,7 +113,7 @@ layer1.MeshSimple(MeshElemTypes,meshsize,abqC.HEX_DOMINATED,abqC.SYSTEM_ASSIGN)
 
 
 # Create and add point marker for fixed faced boundary condition
-FixedPoint=[-30.0,-24.0,0.1] 
+FixedPoint=[-50.0,-49.0,0.1] 
 
 # Define a fixed boundary condition based on that point.
 # EncastreBC is an ABAQUS function that was found by

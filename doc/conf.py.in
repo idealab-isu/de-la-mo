@@ -15,7 +15,14 @@
 import os
 import os.path
 import sys
-sys.path.insert(0, os.path.abspath('${CMAKE_SOURCE_DIR}'))
+
+# Temporarily just use installed copy of Delamo for documentation --
+# Problem is until build is complete we don't have CADmodeler.py, etc.
+# available so importing delamo.api will fail.
+
+# If we want to use the copy from the source tree, uncomment
+# this next line
+#sys.path.insert(0, os.path.abspath('${CMAKE_SOURCE_DIR}'))
 
 
 # -- Project information -----------------------------------------------------

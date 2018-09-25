@@ -682,9 +682,10 @@ if( BUILD_DOCUMENTATION AND Sphinx_FOUND )
     endif()
   endif()
 else()
+  if( BUILD_DOCUMENTATION AND NOT Sphinx_FOUND )
     
-  MESSAGE(WARNING "Sphinx not found -- Not building documentation!")
-
+    MESSAGE(WARNING "Sphinx not found -- Not building documentation!")
+  endif()
 endif()
 
 ### DON'T TOUCH ABOVE THIS LINE - END ###

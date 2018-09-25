@@ -25,6 +25,7 @@ from delamo.codegen import namedbinding_wrapper
 from delamo.abqscript import write_abq_script
 from delamo.abqscript import _capture_assignments_as_variables
 
+
 import delamo.CADwrap
 
 # Abaqus constants that need to be globally

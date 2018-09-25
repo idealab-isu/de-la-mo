@@ -10,7 +10,6 @@ De-la-mo
    :maxdepth: 2
    :caption: Contents:
 
-   index
    delamo
 
 Introduction
@@ -138,7 +137,7 @@ e.g.::
 Check for and troubleshoot any compilation or install errors. You may
 need root or administrator privledges to do the install.
 
-A path file (*.pth) is generated during the build process and then copied to the system ${PYTHON_SITE_PACKAGES} directory during installation.  This path file points to the installation `delamo/` directory and enables python scripts to import delamo without having to have delamo itself placed in ${PYTHON_SITE_PACKAGES}.
+A path file (\*.pth) is generated during the build process and then copied to the Python site-packages directory during installation.  This path file points to the installation delamo/ directory and enables python scripts to import delamo without having to have delamo itself placed in site-packages.
 
 Finally you will need to make your ACIS license available to De-La-Mo.
 To run the examples, place the license (which is a string of uppercase
@@ -764,8 +763,7 @@ the steps are:
 3. BM PREDAMAGE to generate the pre-damage CAD model, layer boundary .stl files, and predamage finite element ABAQUS script.
 4. (Optional) FEINTERACT PREDAMAGE to perform finite element on the undamaged model
 5. GEN APPLY_DAMAGE to run the user-written damage script that adds delamination outline .csv files to the _output/ directory.
-6. GEN DAMAGED to generate the De-la-mo script with layer bonding instructions
-   modified to insert the delaminations specified in the APPLY_DAMAGE step. 
+6. GEN DAMAGED to generate the De-la-mo script with layer bonding instructions modified to insert the delaminations specified in the APPLY_DAMAGE step. 
 7. BM DAMAGED to generate the CAD model and ABAQUS script for the damaged composite
 8. FEINTERACT DAMAGED to create the damaged composite in ABAQUS/CAE. 
 
@@ -886,8 +884,11 @@ operations can be written to the output ABAQUS script.
 Adding new test cases (C++)
 ===========================
 * Create the test case source file in src/testcases/ directory, e.g. __app_stiffener.cpp__
-* The following code segment is a template for the test case source file::
+* The following code segment is a template for the test case source file
 
+::
+
+  
   #include "testcase_includes.h"
   
   
