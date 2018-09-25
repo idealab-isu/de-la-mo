@@ -1,0 +1,12 @@
+
+CreateStiffenerFromLayer should take a section parameter and if given, it should add the stiffener to 
+the body list to generate. 
+
+ "bond_layers" on stiffener really perform imprint operation. 
+   -> Should probably define bond_layers() to actually bond the stiffener, 
+      rename imprint operation. 
+
+
+02_Planar stiffener -> remove stress concentration
+
+Cause Error if performing imprint after bonding layers

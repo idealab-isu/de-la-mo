@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?> 
+
+<!-- NURBS API visualizers for Visual Studio 20xx -->
+<!-- Put them into My Documents/Visual Studio 20xx/Visualizers/ -->
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="delamo::NURBS&lt;*&gt;">
+    <DisplayString>NURBS Surface</DisplayString>
+    <Expand>
+      <Item Name="[degree u]">_mDegree_U</Item>
+      <Item Name="[degree v]">_mDegree_V</Item>
+      <Item Name="[knotvector u]">_mNumKnotVector_U</Item>
+      <ArrayItems>
+        <Size>_mNumKnotVector_U</Size>
+        <ValuePointer>_pKnotVector_U</ValuePointer>
+      </ArrayItems>
+      <Item Name="[knotvector v]">_mNumKnotVector_V</Item>
+      <ArrayItems>
+        <Size>_mNumKnotVector_V</Size>
+        <ValuePointer>_pKnotVector_V</ValuePointer>
+      </ArrayItems>
+      <Item Name="[ctrlpts]">_mNumCtrlPts_U * _mNumCtrlPts_V</Item>
+      <ArrayItems Condition="_pCtrlPts2D != 0">
+		<Direction>Forward</Direction>
+		<Rank>2</Rank>
+        <Size>_mNumCtrlPts_V</Size>
+        <ValuePointer>_pCtrlPts</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="delamo::TPoint2&lt;*&gt;">
+    <DisplayString>[{_rgCoord[0],g}, {_rgCoord[1],g}]</DisplayString>
+    <Expand>
+      <Item Name="[x]">_rgCoord[0]</Item>
+      <Item Name="[y]">_rgCoord[1]</Item>
+    </Expand>
+  </Type>
+  <Type Name="delamo::TPoint3&lt;*&gt;">
+    <DisplayString>[{_rgCoord[0],g}, {_rgCoord[1],g}, {_rgCoord[2],g}]</DisplayString>
+    <Expand>
+      <Item Name="[x]">_rgCoord[0]</Item>
+      <Item Name="[y]">_rgCoord[1]</Item>
+      <Item Name="[z]">_rgCoord[2]</Item>
+    </Expand>
+  </Type>
+  <Type Name="delamo::TPoint4&lt;*&gt;">
+    <DisplayString>[{_rgCoord[0],g}, {_rgCoord[1],g}, {_rgCoord[2],g}, {_rgCoord[3],g}]</DisplayString>
+    <Expand>
+      <Item Name="[x]">_rgCoord[0]</Item>
+      <Item Name="[y]">_rgCoord[1]</Item>
+      <Item Name="[z]">_rgCoord[2]</Item>
+	  <Item Name="[w]">_rgCoord[3]</Item>
+    </Expand>
+  </Type>
+  <Type Name="delamo::TVector2&lt;*&gt;">
+    <DisplayString>[{_mEnd._rgCoord[0] - _mStart._rgCoord[0],g}, {_mEnd._rgCoord[1] - _mStart._rgCoord[1],g}]</DisplayString>
+    <Expand>
+      <Item Name="[x]">_mEnd._rgCoord[0] - _mStart._rgCoord[0]</Item>
+      <Item Name="[y]">_mEnd._rgCoord[1] - _mStart._rgCoord[1]</Item>
+	  <Item Name="[start pt]">_mStart</Item>
+	  <Item Name="[end pt]">_mEnd</Item>
+    </Expand>
+  </Type>
+  <Type Name="delamo::TVector3&lt;*&gt;">
+    <DisplayString>[{_mEnd._rgCoord[0] - _mStart._rgCoord[0],g}, {_mEnd._rgCoord[1] - _mStart._rgCoord[1],g}, {_mEnd._rgCoord[2] - _mStart._rgCoord[2],g}]</DisplayString>
+    <Expand>
+      <Item Name="[x]">_mEnd._rgCoord[0] - _mStart._rgCoord[0]</Item>
+      <Item Name="[y]">_mEnd._rgCoord[1] - _mStart._rgCoord[1]</Item>
+      <Item Name="[z]">_mEnd._rgCoord[2] - _mStart._rgCoord[2]</Item>
+	  <Item Name="[start pt]">_mStart</Item>
+	  <Item Name="[end pt]">_mEnd</Item>
+    </Expand>
+  </Type>
+  <Type Name="delamo::TVector4&lt;*&gt;">
+    <DisplayString>[{_mEnd._rgCoord[0] - _mStart._rgCoord[0],g}, {_mEnd._rgCoord[1] - _mStart._rgCoord[1],g}, {_mEnd._rgCoord[2] - _mStart._rgCoord[2],g}, {_mEnd._rgCoord[3] - _mStart._rgCoord[3],g}]</DisplayString>
+    <Expand>
+      <Item Name="[x]">_mEnd._rgCoord[0] - _mStart._rgCoord[0]</Item>
+      <Item Name="[y]">_mEnd._rgCoord[1] - _mStart._rgCoord[1]</Item>
+      <Item Name="[z]">_mEnd._rgCoord[2] - _mStart._rgCoord[2]</Item>
+	  <Item Name="[w]">_mEnd._rgCoord[3] - _mStart._rgCoord[3]</Item>
+	  <Item Name="[start pt]">_mStart</Item>
+	  <Item Name="[end pt]">_mEnd</Item>
+    </Expand>
+  </Type>
+  <Type Name="delamo::List&lt;*&gt;">
+    <DisplayString>Size = {_mSize}, Capacity = {_mSpace}</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Size>_mSize</Size>
+        <ValuePointer>_pElem</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+</AutoVisualizer>

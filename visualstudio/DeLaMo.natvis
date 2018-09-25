@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?> 
+
+<!-- DeLaMo visualizers for Visual Studio 20xx -->
+<!-- Put them into My Documents/Visual Studio 20xx/Visualizers/ -->
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="Layer">
+    <DisplayString>{_pName,sb}</DisplayString>
+    <Expand>
+      <Item Name="[id]">_mId</Item>
+      <!--<Item Name="[name]">_pName</Item>-->
+      <Item Name="[type]">_eType,en</Item>
+      <Item Name="[direction]">_eDirection,en</Item>
+      <Item Name="[thickness]">_mPosOffset-_mPosOrig</Item>
+      <Item Name="[layup]">_mLayup</Item>
+      <Item Name="[lb count]">_mBodyListSize</Item>
+      <ArrayItems>
+        <Size>_mBodyListSize</Size>
+        <ValuePointer>_pBodyList</ValuePointer>
+      </ArrayItems>
+      <Item Name="[lm count]">_mMoldListSize</Item>
+      <ArrayItems>
+        <Size>_mMoldListSize</Size>
+        <ValuePointer>_pMoldList</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="LayerBody">
+    <DisplayString>Body: {_pName,sb}</DisplayString>
+    <Expand>
+      <!--<Item Name="[name]">_pName</Item>-->
+      <Item Name="[body]">_pBody</Item>
+      <Item Name="[mold]">_mMold</Item>
+      <Item Name="[owner]">_pOwner,na</Item>
+      <ArrayItems>
+        <Size>_mSurfListSize</Size>
+        <ValuePointer>_pSurfList</ValuePointer>
+      </ArrayItems>
+    </Expand>    
+  </Type>
+  <Type Name="LayerSurface">
+    <DisplayString Condition="_bStiffenerPaired == true">Surf: {_eSurfDir,en} -- {_mPoint} - {_mNormal} - {_eDelaminationType} (under stiffener)</DisplayString>
+    <DisplayString>Surf: {_eSurfDir,en} -- {_mPoint} - {_mNormal} - {_eDelaminationType}</DisplayString>
+    <Expand>
+      <Item Name="[point]">_mPoint</Item>
+      <Item Name="[normal]">_mNormal</Item>
+      <Item Name="[angle]">_mAngle</Item>
+      <Item Name="[delam type]">_eDelaminationType,en</Item>
+      <Item Name="[surf dir]">_eSurfDir,en</Item>
+      <Item Name="[face]">_mFace</Item>
+      <Item Name="[stiffener generated]">_bStiffenerGenerated</Item>
+      <Item Name="[stiffener paired]">_bStiffenerPaired</Item>
+      <Item Name="[created from]">_pCreatedFrom</Item>
+      <Item Name="[pair]">_pSurfPair,na</Item>
+      <Item Name="[owner]">_pOwner,na</Item>
+    </Expand>
+  </Type>
+  <Type Name="LayerMold">
+    <DisplayString>Mold: {_eDirection,en}</DisplayString>
+    <Expand>
+      <Item Name="[direction]">_eDirection,en</Item>
+      <Item Name="[stiffener generated]">_bStiffenerGenerated</Item>
+      <Item Name="[body]">_mBody</Item>
+      <Item Name="[owner]">_pOwner,na</Item>
+    </Expand>
+  </Type>
+</AutoVisualizer>
