@@ -19,7 +19,7 @@ acis_license = delamo.CADwrap.read_license_key(filename="license.dat")
 
 # Initialize the DeLaMo model
 DM=DelamoModeler.Initialize(globals(),
-                            facepointtolerancefactor=3.0,
+                            pointtolerancefactor=500.0,
                             normaltolerance=100e-4,
                             license_key=acis_license)
 
@@ -227,7 +227,7 @@ FEModel.EncastreBC(name="FixedFace_%d" % (DM.get_unique()),
 # This is a direct ABAQUS call on the part object
 # within layer1 (assumes layer1 is not split due to fiber/matrix breakage)
 layer1.singlepart.fe_part.Surface(name="ForceSurface",
-                                  side1Faces=layer1.singlepart.GetPartFace((24.0,24.0,thickness*0),DM.pointtolerance))
+                                  side1Faces=layer1.singlepart.GetPartFace((-49.0,-49.0,thickness*0),0.1))   # 0.1 is tolerance to accommodate that it is curved and the z position will be a little off
 
 ForceVector=[ 0.0, 0.0, -5e-2 ] # Units of MPa 
 # Call ABAQUS SurfaceTraction method
@@ -236,7 +236,7 @@ ForceVector=[ 0.0, 0.0, -5e-2 ] # Units of MPa
 # prefix. 
 FEModel.SurfaceTraction(name="SurfaceTraction_%d" % (DM.get_unique()),
                         createStepName=ApplyForceStep.name,
-                        region=layer1.singlepart.GetInstanceFaceRegionSurface((24.0,24.0,thickness*0.0),DM.pointtolerance),
+                        region=layer1.singlepart.GetInstanceFaceRegionSurface((-49.0,-49.0,thickness*0.0),0.1),   # 0.1 is point tolerance
                         distributionType=abqC.UNIFORM,
                         field='',
                         localCsys=None,

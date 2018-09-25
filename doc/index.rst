@@ -422,7 +422,7 @@ Also, in De-la-mo symbolic constants such as LAMINA need to be
 replaced with attributes of abqC, e.g. abqC.LAMINA::
 
   CompositeMaterial = FEModel.Material(name='Composite material')
-  CompositeMaterial.Elastic(type=LAMINA, 
+  CompositeMaterial.Elastic(type=abqC.LAMINA, 
       table=((141500.0, # E1
               8500.0, # E2
 	      0.33,  # Nu12

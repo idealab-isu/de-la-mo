@@ -230,10 +230,10 @@ class DelamoModeler(object):
     
     @classmethod
     def Initialize(cls,globals,
-                   pointtolerancefactor=3.0,
+                   pointtolerancefactor=100.0,
                    normaltolerance=100e-4,
                    tangenttolerance=100e-4,
-                   **kwargs):
+                   license_key=""):
         """Initialize the DelamoModeler, creating the codestores for initinstrs, assemblyinstrs, bcinstrs, meshinstrs, and runinstrs, and
         specifying the default tolerances"""
         
@@ -301,8 +301,7 @@ class DelamoModeler(object):
         #BodyDB=assemblyinstrs.rewrapobj(BodyDB_build)
             
         # Initialize the ACIS Model Builder
-        lic_key_str = kwargs.get('license_key', "")
-        modelbuilder = delamo.CADwrap.ModelBuilder(license_key=lic_key_str)
+        modelbuilder = delamo.CADwrap.ModelBuilder(license_key=license_key)
 
         
         # Define default finite element tolerances

@@ -19,7 +19,7 @@ acis_license = delamo.CADwrap.read_license_key(filename="license.dat")
 
 # Initialize the DeLaMo model
 DM=DelamoModeler.Initialize(globals(),
-                            pointtolerancefactor=3.0,
+                            pointtolerancefactor=100.0,
                             normaltolerance=100e-4,
                             tangenttolerance=100e-4,
                             license_key=acis_license)
@@ -144,34 +144,24 @@ for layernum in range(numlayers):
     # Create layer
 
     if layernum==0:
-        # layer_mold_list[0] is little tiny piece, to be bonded into...
-        #layer = Layer.CreateFromSAT(DM,"data/FlatMold2.SAT",delamo.CADwrap.OFFSET_DIRECTION,thickness,"Layer %d" % (layernum),LaminaSection,orientation[layernum])
         layer = Layer.CreateFromMold(DM,cutout.gk_part,delamo.CADwrap.OFFSET_DIRECTION,thickness,"Layer %d" % (layernum),LaminaSection,orientation[layernum])
         pass
     else:
         layer = Layer.CreateFromLayer(DM,prev_layer.gk_layer,delamo.CADwrap.OFFSET_DIRECTION,thickness,"Layer %d" % (layernum), LaminaSection,orientation[layernum])
         pass
 
-
-
     layer.Finalize(DM)
     
-    layeroffset=thickness + (layernum+0.5)*thickness  # !!!*** Why did we need to add in the extra initial thickness (?) Probably a bug in the modelbuilder ... The Mold_Region object shows in the correct position
-    # ... Seems to definitely be a modelbuilder bug, where the layer is shifted up by a thickness  (Mold treated as if it has thickness) but
-    # when it goes to find face points/normals it gets them where the layer should be, not where it is!!!
-    # Temporary workaround: ABQ can only handle a single set of SSC's around the boundary .. Should really do this for center layer. 
+    layeroffset=thickness + (layernum+0.5)*thickness # !!! Should the thickness + be present? Doesn't' make much sense....
 
-    #import pdb
-    #pdb.set_trace()
+    # Bond cut-out layer to surrounding shell
     ssc.bond_layer(DM,layer,layeroffset)   
-    
 
-
-
-    
+    # Mesh layer
     layer.MeshSimple(MeshElemTypes,meshsize,abqC.HEX_DOMINATED,abqC.SYSTEM_ASSIGN)
 
     if prev_layer is not None:
+        # Bond layer to previous layer
         bond_layers(DM,prev_layer,layer,
                     defaultBC=delamo.CADwrap.Delamination_COHESIVE,
                     CohesiveInteraction=CohesiveInteraction,
@@ -183,38 +173,15 @@ for layernum in range(numlayers):
     pass
 
 ssc.Finalize(DM,influenceDistance=6.0)
-#solidfaces2=DM.GetFaces(layer1.fe_layer.parts[0].instance.faces,(((0,50,thickness/2.0),layer1SideFaceNormalList[2]),),DM.facepointtolerance,DM.normaltolerance)
-#SolidFaceRegion2=regionToolset.Region(side1Faces=solidfaces2)
-#SolidSurf=Laminate.Surface(name="SolidSurf",side1Faces=solidfaces)
-
-#ShellGeomPartBC=DM.bcinstrs.rewrapobj(ShellGeomPart)
-# Either need to modify edge algorithm or get tangent... !!!*** (replace 1.0,0.0)
-#shelledges2=DM.GetEdges(ShellGeomPart.instance.edges,ShellGeomPart.abq_part.vertices,((tuple(shell_edge_point_list[2]),(1.0,0.,0.)),),0.1,DM.normaltolerance)
-#ShellRegion2=regionToolset.Region(side1Edges=shelledges2)
-
-#ShellSurf=Laminate.Surface(name="ShellSurf",side1Edges=shelledges)
-
-
-#FEModel.ShellSolidCoupling(name='ssc2',
-#                                 shellEdge=ShellRegion2,
-#                                 solidFace=SolidFaceRegion2,
-#                                 positionToleranceMethod=abqC.COMPUTED,
-#                                 influenceDistanceMethod=abqC.DEFAULT)
 
 
 
 
-
-
-#shellfixededges=DM.GetEdges(ShellGeomPart.instance.edges,ShellGeomPart.abq_part.vertices,(((-500.0,-500.0,0.0),(0.0,1.,0.)),),DM.facepointtolerance,DM.normaltolerance)
-#ShellRegion=regionToolset.Region(side1Edges=shelledges)
-#DM.BoundaryCondition.FixedEdge(FEModel,ShellGeomParts,"EncastreBC_%d" % (DM.get_unique()),None,ApplyForceStep,(((-500.0,0.0,0.0),(0.0,1.,0.)),),DM.facepointtolerance,DM.normaltolerance)
 
 FEModel.EncastreBC(name="EncastreBC_%d" % (DM.get_unique()),
                    createStepName=ApplyForceStep.name,
                    region=shell.GetInstanceEdgeRegion((-500.0,0.0,0.0),DM.pointtolerance))
 
-#DM.BoundaryCondition.FixedEdge(FEModel,ShellGeomParts,"EncastreBC_%d" % (DM.get_unique()),None,ApplyForceStep,(((500.0,0.0,0.0),(0.0,1.,0.)),),DM.facepointtolerance,DM.normaltolerance)
 FEModel.EncastreBC(name="EncastreBC_%d" % (DM.get_unique()),
                    createStepName=ApplyForceStep.name,
                    region=shell.GetInstanceEdgeRegion((500.0,0.0,0.0),DM.pointtolerance))
@@ -225,7 +192,6 @@ FEModel.EncastreBC(name="EncastreBC_%d" % (DM.get_unique()),
 ForceVector=[ 0.0, 0.0, -5e-2 ] # Units of MPa 
 
 # Apply surface traction to final layer
-#layer.SurfaceTraction(DM,ApplyForceStep,(layer.GetFaceFromPoint(DM,(24.0,24.0,thickness*numlayers)),),ForceVector,name="AppliedTraction")
 FEModel.SurfaceTraction(name="SurfaceTraction%d" % (DM.get_unique()),
                         createStepName=ApplyForceStep.name,
                         region=layer.singlepart.GetInstanceFaceRegionSurface((24.0,24.0,thickness*numlayers),DM.pointtolerance),

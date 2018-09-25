@@ -18,7 +18,7 @@ acis_license = delamo.CADwrap.read_license_key(filename="license.dat")
 
 # Initialize the DeLaMo model
 DM=DelamoModeler.Initialize(globals(),
-                            pointtolerancefactor=3.0,
+                            pointtolerancefactor=100.0,
                             normaltolerance=100e-4,
                             license_key=acis_license)
 
