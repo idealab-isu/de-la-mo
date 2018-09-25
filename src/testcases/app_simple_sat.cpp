@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
 	// Read a ACIS file and use the loaded entities as molds
 	delamo::List<LayerMold*> lmlist;
-	acis->load_molds("13_NASA_Local_Mold.SAT", lmlist);
+	acis->load_molds("CurvedMold1.SAT", lmlist);
 
 	// Create 1st layer
 	acis->create_layer(lmlist[0], Direction::OFFSET, thickness, &layers[0]);
@@ -61,8 +61,9 @@ int main(int argc, char** argv)
 	layers[1].name("Lamina_2");
 	layers[1].layup(90);
 
-	// Testing single delamination with FAL
+	// Imprint layers to each other with FAL
 	acis->adjacent_layers(&layers[0], &layers[1], BCStatus::is_contact, list01, list01_size);
+	std::cout << "Bonded layer 1 and 2" << std::endl;
 
 	// Create 3rd layer
 	acis->create_layer(&layers[1], Direction::OFFSET, thickness, &layers[2]);
@@ -71,6 +72,7 @@ int main(int argc, char** argv)
 
 	// Imprint layers to each other with FAL
 	acis->adjacent_layers(&layers[1], &layers[2], BCStatus::is_contact, list12, list12_size);
+	std::cout << "Bonded layer 2 and 3" << std::endl;
 
 	// Create 4th layer
 	acis->create_layer(&layers[2], Direction::OFFSET, thickness, &layers[3]);
@@ -79,14 +81,20 @@ int main(int argc, char** argv)
 
 	// Imprint layers to each other with FAL
 	acis->adjacent_layers(&layers[2], &layers[3], BCStatus::is_contact, list23, list23_size);
+	std::cout << "Bonded layer 3 and 4" << std::endl;
 
 	// Create 5th layer
 	acis->create_layer(&layers[3], Direction::OFFSET, thickness, &layers[4]);
 	layers[4].name("Lamina_5");
 	layers[4].layup(0);
 
-	// Testing single delamination with FAL
-	acis->adjacent_layers(&layers[3], &layers[4], BCStatus::is_contact, list34, list34_size);
+	//acis->parpos_csv_to_pos("Delamination1.csv", &layers[4], Direction::ORIG, "Delamination1_3D.csv");
+
+	// Imprint layers to each other with Delamination
+	acis->adjacent_layers(&layers[3], &layers[4], "Delamination1_3D.csv", BCStatus::is_contact, list34, list34_size);
+
+	//acis->adjacent_layers(&layers[3], &layers[4], BCStatus::is_contact, list34, list34_size);
+	std::cout << "Bonded layer 4 and 5" << std::endl;
 
 	// Create 6th layer
 	acis->create_layer(&layers[4], Direction::OFFSET, thickness, &layers[5]);
@@ -95,18 +103,16 @@ int main(int argc, char** argv)
 
 	// Imprint layers to each other with FAL
 	acis->adjacent_layers(&layers[4], &layers[5], BCStatus::is_contact, list45, list45_size);
+	std::cout << "Bonded layer 5 and 6" << std::endl;
 
 	// Create 7th layer
 	acis->create_layer(&layers[5], Direction::OFFSET, thickness, &layers[6]);
 	layers[6].name("Lamina_7");
 	layers[6].layup(0);
 
-	//acis->parpos_csv_to_pos("Delamination1.csv", &layers[6], Direction::ORIG, "Delamination1_3D.csv");
-	//acis->parpos_csv_to_pos("Delamination1.csv", layers[6], Direction::ORIG, "Delamination1_3D.csv");
-
-	// Add delamination under the stiffener
-	//acis->adjacent_layers(layers[5], layers[6], "Delamination1_3D.csv", BCStatus::is_contact, list56, list56_size);
+	// Imprint layers to each other with FAL
 	acis->adjacent_layers(&layers[5], &layers[6], BCStatus::is_contact, list56, list56_size);
+	std::cout << "Bonded layer 7 and 8" << std::endl;
 
 	// Create 8th layer
 	acis->create_layer(&layers[6], Direction::OFFSET, thickness, &layers[7]);
