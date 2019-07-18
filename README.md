@@ -2,6 +2,8 @@
 
 The De-la-mo website can be found at http://thermal.cnde.iastate.edu/de-la-mo.xhtml
 
+PLEASE NOTE: THIS IS THE OBSOLETE DE-LA-MO V1 REPOSITORY. You probably want de-la-mo v2, which no longer requires the Acis solid modeler, nor swig, nor a compiler.
+
 On-line documentation and installation instructions are located at
 http://thermal.cnde.iastate.edu/de-la-mo/index.html
 
